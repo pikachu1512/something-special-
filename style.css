@@ -1,0 +1,792 @@
+/* ============================================================
+   DESIGN TOKENS
+   Change these to re-theme the entire site.
+   ============================================================ */
+:root {
+  /* Palette — pastel pink & cream */
+  --cream:        #FFF8F3;
+  --cream-deep:    #FFEFE4;
+  --blush:        #FFE1E9;
+  --pink-soft:     #FFC2D6;
+  --pink:          #FFA8C5;
+  --pink-deep:     #F080A8;
+  --rose:          #E75480;
+  --plum:          #5B3A4A;
+  --plum-soft:     #8C6A78;
+  --white-glass:   rgba(255, 255, 255, 0.45);
+  --white-glass-strong: rgba(255, 255, 255, 0.65);
+  --border-glass:  rgba(255, 255, 255, 0.6);
+
+  /* Typography */
+  --font-display: 'Dancing Script', cursive;
+  --font-body: 'Poppins', sans-serif;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--plum);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Soft animated gradient background */
+  background: linear-gradient(-45deg, var(--cream), var(--blush), var(--pink-soft), var(--cream-deep));
+  background-size: 400% 400%;
+  animation: gradientShift 18s ease infinite;
+}
+
+/* Prevent scrolling until unlocked */
+body.locked {
+  height: 100vh;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   AMBIENT LAYERS — sakura petals & floating hearts
+   ============================================================ */
+.ambient-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -10%;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, var(--pink-soft) 70%);
+  border-radius: 150% 0% 150% 0%;
+  opacity: 0.8;
+  animation-name: petalFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--drift, 40px)) rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+.mini-heart {
+  position: absolute;
+  bottom: -5%;
+  color: var(--rose);
+  opacity: 0.55;
+  font-size: 16px;
+  animation-name: heartRise;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+}
+
+@keyframes heartRise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.8);
+    opacity: 0;
+  }
+  10% { opacity: 0.6; }
+  100% {
+    transform: translateY(-110vh) translateX(var(--drift, -30px)) scale(1.1);
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY HELPERS
+   ============================================================ */
+.script-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--rose);
+  font-size: clamp(2.1rem, 8vw, 3.2rem);
+  line-height: 1.15;
+  margin-bottom: 0.6rem;
+}
+
+.script-heading.small {
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+}
+
+.script-heading.center {
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.eyebrow.center {
+  text-align: center;
+}
+
+.heart-pop {
+  display: inline-block;
+  animation: heartbeat 1.6s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.18); }
+  40% { transform: scale(0.96); }
+  60% { transform: scale(1.12); }
+}
+
+/* ============================================================
+   GLASSMORPHISM CARD
+   ============================================================ */
+.glass-card {
+  background: var(--white-glass);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--border-glass);
+  border-radius: 28px;
+  box-shadow:
+    0 8px 32px rgba(231, 84, 128, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  padding: 2.2rem 1.6rem;
+}
+
+/* ============================================================
+   SCREEN / SECTION LAYOUT
+   ============================================================ */
+.screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem 1.25rem;
+  scroll-snap-align: start;
+}
+
+.main-content {
+  scroll-snap-type: y proximity;
+}
+
+/* ============================================================
+   LOCK SCREEN
+   ============================================================ */
+.lock-screen {
+  z-index: 20;
+}
+
+.lock-card {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: cardEnter 0.9s var(--ease-soft) both;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lock-sub {
+  font-size: 0.95rem;
+  color: var(--plum-soft);
+  margin-bottom: 1.6rem;
+}
+
+.lock-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.password-input {
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: 16px;
+  border: 1.5px solid rgba(240, 128, 168, 0.35);
+  background: var(--white-glass-strong);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--plum);
+  outline: none;
+  transition: border-color 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft);
+}
+
+.password-input::placeholder {
+  color: var(--plum-soft);
+  opacity: 0.7;
+}
+
+.password-input:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(231, 84, 128, 0.15);
+}
+
+/* Shake animation for incorrect password */
+.shake {
+  animation: shake 0.5s var(--ease-soft);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-10px); }
+  30% { transform: translateX(9px); }
+  45% { transform: translateX(-7px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  90% { transform: translateX(2px); }
+}
+
+.lock-error {
+  color: var(--rose);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 0.9rem;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.3s var(--ease-soft), transform 0.3s var(--ease-soft);
+}
+
+.lock-error.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lock-hint {
+  margin-top: 1.4rem;
+  font-size: 0.78rem;
+  color: var(--plum-soft);
+  opacity: 0.8;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink-deep), var(--rose));
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.4rem;
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(231, 84, 128, 0.35);
+  transition: transform 0.2s var(--ease-bounce), box-shadow 0.2s var(--ease-soft);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.015);
+  box-shadow: 0 14px 28px rgba(231, 84, 128, 0.42);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-secondary {
+  margin-top: 1.8rem;
+  background: transparent;
+  border: 1.5px solid var(--rose);
+  color: var(--rose);
+  padding: 0.75rem 1.5rem;
+  border-radius: 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-soft);
+}
+
+.btn-secondary:hover {
+  background: var(--rose);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   SHARED FADE KEYFRAMES (used by the lock→letter transition)
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* ============================================================
+   🌸 CINEMATIC UNLOCK BUTTON ANIMATION — starts here
+   Sequence on correct password:
+     1) .btn-shrink       — quick, soft compress (~0.1s)
+     2) .btn-expand-glow  — gentle expand + soft glow bloom
+     3) sakura petals / hearts burst outward (see .burst-container below)
+   Tweak durations/easing here to change the whole feel.
+   ============================================================ */
+.btn-primary {
+  position: relative; /* anchor point for the burst particles */
+  overflow: visible;
+}
+
+.btn-primary.btn-shrink {
+  animation: btnShrink 0.12s var(--ease-soft) forwards;
+}
+
+@keyframes btnShrink {
+  from { transform: scale(1); }
+  to   { transform: scale(0.93); }
+}
+
+.btn-primary.btn-expand-glow {
+  animation: btnExpandGlow 0.85s var(--ease-soft) forwards;
+}
+
+@keyframes btnExpandGlow {
+  0% {
+    transform: scale(0.93);
+    box-shadow: 0 10px 24px rgba(231, 84, 128, 0.35);
+  }
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 10px rgba(255, 214, 229, 0.35),
+                0 0 30px 8px rgba(255, 182, 213, 0.55);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 22px rgba(255, 214, 229, 0),
+                0 10px 24px rgba(231, 84, 128, 0.35);
+  }
+}
+
+/* Label softly fades as the glow takes over, so the burst reads
+   as the focal point rather than the text */
+.btn-primary.btn-expand-glow #unlockBtnLabel {
+  animation: labelSoften 0.85s var(--ease-soft) forwards;
+}
+
+@keyframes labelSoften {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* Container the burst particles are injected into (script.js).
+   Sits centered on the button, particles escape its bounds. */
+.burst-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* A single sakura petal in the burst */
+.burst-petal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, var(--pink-soft) 70%);
+  border-radius: 150% 0% 150% 0%;
+  opacity: 0;
+  animation: burstFly 1.3s var(--ease-soft) forwards;
+}
+
+/* A single tiny heart in the burst */
+.burst-heart-particle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 13px;
+  color: var(--rose);
+  opacity: 0;
+  animation: burstFly 1.3s var(--ease-soft) forwards;
+}
+
+/* Particles travel outward/upward along a per-particle custom
+   direction (--tx, --ty) and rotate slightly (--rot), fading as
+   they go — kept gentle and drifting, not explosive. */
+@keyframes burstFly {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--tx, 40px), var(--ty, -70px)) rotate(var(--rot, 90deg)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Lock screen's own soft fade-out, triggered right after the burst */
+.lock-screen.lock-fade-out {
+  animation: fadeOut 0.7s var(--ease-soft) forwards;
+}
+/* END unlock button animation */
+
+/* ============================================================
+   MAIN CONTENT FADE-IN
+   ============================================================ */
+.main-content {
+  animation: fadeIn 0.9s var(--ease-soft) both;
+}
+
+/* ============================================================
+   NAV DOTS
+   ============================================================ */
+.nav-dots {
+  position: fixed;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(231, 84, 128, 0.25);
+  border: 1.5px solid var(--rose);
+  transition: all 0.3s var(--ease-soft);
+  position: relative;
+}
+
+.nav-dot.active {
+  background: var(--rose);
+  transform: scale(1.3);
+}
+
+.nav-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  background: var(--white-glass-strong);
+  padding: 3px 8px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease-soft);
+  color: var(--plum);
+}
+
+.nav-dot:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================
+   MUTE TOGGLE
+   ============================================================ */
+.mute-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 30;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glass);
+  background: var(--white-glass-strong);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(231, 84, 128, 0.18);
+  transition: transform 0.2s var(--ease-bounce);
+}
+
+.mute-toggle:hover {
+  transform: scale(1.08);
+}
+
+/* ============================================================
+   LETTER SECTION
+   ============================================================ */
+.letter-card {
+  max-width: 480px;
+  width: 100%;
+  text-align: left;
+  animation: slideUp 0.9s var(--ease-soft) both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-text {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--plum);
+  white-space: pre-line;
+  min-height: 220px;
+}
+
+/* Typewriter cursor */
+.letter-text::after {
+  content: '|';
+  display: inline-block;
+  color: var(--rose);
+  animation: blink 0.9s step-start infinite;
+}
+
+.letter-text.done::after {
+  display: none;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.letter-signature {
+  margin-top: 1.6rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--pink-deep);
+  text-align: right;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--plum-soft);
+  animation: bobUpDown 2s ease-in-out infinite;
+}
+
+.scroll-arrow {
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid var(--rose);
+  border-bottom: 2px solid var(--rose);
+  transform: rotate(45deg);
+}
+
+@keyframes bobUpDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ============================================================
+   GALLERY SECTION
+   ============================================================ */
+.gallery-screen {
+  gap: 1.6rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+  width: 100%;
+  max-width: 420px;
+  margin-top: 1rem;
+}
+
+.gallery-card {
+  background: var(--white-glass);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(231, 84, 128, 0.14);
+  opacity: 0;
+  transform: translateY(30px) scale(0.96);
+  transition: transform 0.4s var(--ease-bounce), box-shadow 0.4s var(--ease-soft);
+}
+
+.gallery-card.in-view {
+  animation: cardEnter 0.7s var(--ease-soft) forwards;
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(231, 84, 128, 0.24);
+}
+
+.gallery-img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--blush), var(--pink-soft));
+}
+
+.gallery-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease-soft);
+}
+
+.gallery-card:hover .gallery-img-wrap img {
+  transform: scale(1.08);
+}
+
+.gallery-card figcaption {
+  padding: 0.9rem 1rem;
+  font-size: 0.85rem;
+  color: var(--plum-soft);
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ============================================================
+   FINAL SECTION
+   ============================================================ */
+.final-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.final-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.final-card {
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  animation: cardEnter 1s var(--ease-soft) both;
+}
+
+.final-title {
+  font-size: clamp(1.9rem, 8vw, 2.8rem);
+  margin-bottom: 1.2rem;
+}
+
+.final-message {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: var(--plum);
+}
+
+.final-burst-heart {
+  position: absolute;
+  font-size: 1.4rem;
+  color: var(--rose);
+  animation: burstFloat 3.5s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+@keyframes burstFloat {
+  0% { transform: translateY(0) scale(0.7); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translateY(-90vh) scale(1.2); opacity: 0; }
+}
+
+/* ============================================================
+   RESPONSIVE — TABLET / DESKTOP ENHANCEMENTS
+   ============================================================ */
+@media (min-width: 640px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 640px;
+  }
+  .gallery-card:nth-child(3) {
+    grid-column: span 2;
+    max-width: 300px;
+    justify-self: center;
+  }
+}
+
+@media (min-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 920px;
+  }
+  .gallery-card:nth-child(3) {
+    grid-column: span 1;
+    max-width: none;
+  }
+  .glass-card {
+    padding: 3rem 2.6rem;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION SUPPORT
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

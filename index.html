@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>A Little Surprise For You</title>
+
+  <!-- Google Fonts: Poppins (body/UI) + Dancing Script (romantic display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       AMBIENT LAYERS
+       Sakura petals + floating hearts are injected here by script.js
+       ============================================================ -->
+  <div class="ambient-layer" id="petalLayer" aria-hidden="true"></div>
+  <div class="ambient-layer" id="heartLayer" aria-hidden="true"></div>
+
+  <!-- ============================================================
+       SCREEN 1 — LOCK / WELCOME SCREEN
+       ============================================================ -->
+  <section id="lockScreen" class="screen lock-screen">
+    <div class="glass-card lock-card">
+      <p class="eyebrow">for someone special</p>
+      <h1 class="script-heading">A little surprise for you <span class="heart-pop">❤️</span></h1>
+      <p class="lock-sub">This little corner of the internet only opens for you.</p>
+
+      <form id="lockForm" class="lock-form" autocomplete="off">
+        <!-- 🔐 REPLACE PASSWORD: change the string inside CORRECT_PASSWORD in script.js -->
+        <label for="passwordInput" class="sr-only">Enter password</label>
+        <input
+          type="password"
+          id="passwordInput"
+          class="password-input"
+          placeholder="Enter the secret word..."
+          inputmode="text"
+        />
+        <!-- 🌸 UNLOCK BUTTON REVEAL ANIMATION starts here.
+             #burstContainer is where script.js injects the sakura
+             petals + tiny hearts that burst outward on success. -->
+        <button type="submit" id="unlockBtn" class="btn-primary">
+          <span id="unlockBtnLabel">Unlock</span>
+          <span class="burst-container" id="burstContainer" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <p id="lockError" class="lock-error" aria-live="polite">That's not quite it — try again ✨</p>
+      <p class="lock-hint">Hint: it's something only you would know 💌</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MAIN EXPERIENCE (hidden until unlocked)
+       ============================================================ -->
+  <main id="mainContent" class="main-content hidden">
+
+    <!-- Mobile-friendly floating nav dots -->
+    <nav class="nav-dots" id="navDots" aria-label="Section navigation">
+      <a href="#letterSection" class="nav-dot active" data-label="Letter"></a>
+      <a href="#gallerySection" class="nav-dot" data-label="Memories"></a>
+      <a href="#finalSection" class="nav-dot" data-label="Finale"></a>
+    </nav>
+
+    <!-- Background music: browser-friendly, only starts after unlock -->
+    <!-- 🎵 REPLACE MUSIC: swap the src below with your own audio file path -->
+    <audio id="bgMusic" loop preload="none">
+      <source src="music/song.mp3" type="audio/mpeg">
+    </audio>
+    <button id="muteToggle" class="mute-toggle" aria-label="Toggle music">
+      <span id="muteIcon">🔊</span>
+    </button>
+
+    <!-- ========================================================
+         SCREEN 2 — HEARTFELT LETTER
+         ======================================================== -->
+    <section id="letterSection" class="screen letter-screen">
+      <div class="glass-card letter-card">
+        <p class="eyebrow">an open letter</p>
+        <h2 class="script-heading small">To Aashi</h2>
+
+        <!-- ✍️ REPLACE LETTER: edit the text inside #letterText in HTML,
+             AND update the matching string in the LETTER_TEXT constant
+             in script.js (used for the typewriter effect) -->
+        <p id="letterText" class="letter-text"></p>
+
+        <div class="letter-signature">— with all my heart</div>
+      </div>
+
+      <div class="scroll-indicator" id="scrollIndicator">
+        <span>scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 3 — MEMORY GALLERY
+         ======================================================== -->
+    <section id="gallerySection" class="screen gallery-screen">
+      <p class="eyebrow center">a few of my favorites</p>
+      <h2 class="script-heading small center">Our Memories</h2>
+
+      <!-- 🖼️ REPLACE PHOTOS: swap each .jpg src with your own image,
+           and edit the <figcaption> text for each memory -->
+      <div class="gallery-grid">
+        <figure class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="images/memory1.jpg" alt="Memory one" loading="lazy" />
+          </div>
+          <figcaption>Best day</figcaption>
+        </figure>
+
+        <figure class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="images/memory2.jpg" alt="Memory two" loading="lazy" />
+          </div>
+          <figcaption>Cutest person ever</figcaption>
+        </figure>
+
+        <figure class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="images/memory3.jpg" alt="Memory three" loading="lazy" />
+          </div>
+          <figcaption>My first love</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 4 — FINAL PAGE
+         ======================================================== -->
+    <section id="finalSection" class="screen final-screen">
+      <div class="final-hearts" id="finalHearts" aria-hidden="true"></div>
+
+      <div class="glass-card final-card">
+        <h2 class="script-heading final-title">Happy Girlfriend's Day <span class="heart-pop">❤️</span></h2>
+
+        <!-- 💌 REPLACE FINAL MESSAGE: edit the paragraph below -->
+        <p class="final-message">
+          Every little moment with you feels like a gift I get to unwrap again and again.
+          Thank you for being my favorite person, my softest place to land, and my
+          best story yet. Here's to many more chapters, written slowly, together.
+        </p>
+
+        <button id="replayBtn" class="btn-secondary">Replay the Surprise ↺</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
